@@ -32,6 +32,7 @@ public class Word {
     public void showWord() {
         System.out.printf("%s %s \n", word_target, word_explain);
     }
+
     public boolean equals(Word ortherWord) {
         if (word_target.equals(ortherWord.getWord_target()) && word_explain.equals(ortherWord.getWord_explain())) {
             return true;
@@ -56,6 +57,32 @@ public class Word {
         ortherWord.setWord_target(word_target);
 
         word_target = temp.getWord_target();
-        word_explain = word_explain;
+        word_explain = temp.getWord_explain();
+    }
+
+    /**
+     *
+     * @param ortherWord
+     * @return int > 0 if word > ortherWord
+     */
+    public int compareTo(Word ortherWord) {
+        if (word_target.compareTo(ortherWord.getWord_target()) > 0) {
+            return 1;
+        } else {
+            // if same word target
+            if (word_target.compareTo(ortherWord.getWord_target()) == 0) {
+                if (word_explain.compareTo(ortherWord.getWord_explain()) > 0) {
+                    return 1;
+                } else {
+                    if (word_explain.compareTo(ortherWord.getWord_explain()) == 0) {
+                        return 0;
+                    } else {
+                        return -1;
+                    }
+                }
+            } else {
+                return -1;
+            }
+        }
     }
 }
