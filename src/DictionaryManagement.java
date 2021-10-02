@@ -1,14 +1,19 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import java.io.File;
+
 import java.io.FileWriter;
 import java.io.FileReader;
 public class DictionaryManagement {
+    final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
+    Scanner sc = new Scanner(System.in);
     DictionaryManagement() {
         dictionary = new Dictionary();
     }
-    Scanner sc = new Scanner(System.in);
 
     /**
      * insert word to dictionary
@@ -17,10 +22,14 @@ public class DictionaryManagement {
     {
         System.out.print("Target word: ");
         String word_target = sc.nextLine();
-        word_target = word_target.toLowerCase(Locale.ROOT);
+        word_target = word_target.toLowerCase();
+        word_target = word_target.trim();
+
         System.out.print("Explain word: ");
         String word_explain = sc.nextLine();
-        word_explain = word_explain.toLowerCase(Locale.ROOT);
+        word_explain = word_explain.toLowerCase();
+        word_explain = word_explain.trim();
+
         Word word = new Word(word_target, word_explain);
         dictionary.addWordToDictionary(word);
     }
@@ -69,7 +78,53 @@ public class DictionaryManagement {
     public int indexOf(Word word) {
         return dictionary.indexOf(word);
     }
+
+    /**
+     *
+     * get information word from file.
+     */
     public void insertFromFile() {
-        File file = new File ("dictionaries.txt");
+        Path path = Path.of(pathFile);
+        try {
+            List<String> list = Files.readAllLines(path);
+            for (String str : list) {
+                String[] data = str.split("<>");
+                String word_target = data[0];
+                String word_explain = data[1];
+                Word newWord = new Word(word_target, word_explain);
+                insertFromCommandLine(newWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToFile() {
+        try {
+            FileWriter write = new FileWriter(pathFile);
+            for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
+                Word word = dictionary.getWordIndex(i);
+                write.write(word.getWordTarget() + "<>" + word.getWordExplain() + "\n");
+
+            }
+            write.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void dictionaryLookup() {
+        System.out.print("Your word lookup: ");
+        String charLookUp = sc.next();
+        charLookUp = charLookUp.toLowerCase();
+        int count = 0;
+        for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
+            if (dictionary.getWordIndex(i).getWordTarget().contains(charLookUp)) {
+                System.out.println(dictionary.getWordIndex(i));
+                count ++;
+            }
+        }
+        System.out.println("Have " + count + " word in dictionary");
     }
 }
