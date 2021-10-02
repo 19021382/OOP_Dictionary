@@ -30,7 +30,7 @@ public class Word {
     }
 
     public void showWord() {
-        System.out.printf("%s %s \n", word_target, word_explain);
+        System.out.printf("%-15s %-15s \n", word_target, word_explain);
     }
 
     public boolean equals(Word ortherWord) {
@@ -43,11 +43,11 @@ public class Word {
     public String toString() {
         int lengthTarget = word_target.length();
         int lengthExplain = word_explain.length();
-        String res = "";
-        for(int i = 0; i < 25 - lengthTarget; i++)  res += " ";
+        String res = "      ";
         res += this.word_target;
-        for(int i = 0; i< 25 - lengthExplain; i++)  res += " ";
+        for(int i = 0; i < 20 - lengthTarget; i++)  res += " ";
         res += this.word_explain;
+        for(int i = 0; i< 20 - lengthExplain; i++)  res += " ";
         return res;
     }
 
