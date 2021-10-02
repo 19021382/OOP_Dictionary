@@ -1,0 +1,9 @@
+book<>book
+bye<>bye
+candy<>candy
+hello<>hello
+job<>job
+lamp<>lamp
+library<>library
+school<>school
+sea<>bien
