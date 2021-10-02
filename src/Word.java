@@ -1,3 +1,5 @@
+import java.util.Locale;
+
 public class Word {
     private String word_target;
     private String word_explain;
@@ -7,25 +9,25 @@ public class Word {
     }
 
     public Word(String word_target, String word_explain) {
-        this.word_target = word_target;
-        this.word_explain = word_explain;
+        this.word_target = word_target.toLowerCase();
+        this.word_explain = word_explain.toLowerCase();
     }
 
     public Word(Word word) {
-        this.word_target = word.getWord_target();
-        this.word_explain = word.getWord_explain();
+        this.word_target = word.getWordTarget();
+        this.word_explain = word.getWordTarget();
     }
 
-    public void setWord_target(String word_target) {
+    public void setWordTarget(String word_target) {
         this.word_target = word_target;
     }
-    public void setWord_explain(String word_explain) {
+    public void setWordExplain(String word_explain) {
         this.word_explain = word_explain;
     }
-    public String getWord_target() {
+    public String getWordTarget() {
         return word_target;
     }
-    public String getWord_explain() {
+    public String getWordExplain() {
         return word_explain;
     }
 
@@ -34,7 +36,7 @@ public class Word {
     }
 
     public boolean equals(Word ortherWord) {
-        if (word_target.equals(ortherWord.getWord_target()) && word_explain.equals(ortherWord.getWord_explain())) {
+        if (word_target.equals(ortherWord.getWordTarget()) && word_explain.equals(ortherWord.getWordExplain())) {
             return true;
         }
         return false;
@@ -53,11 +55,11 @@ public class Word {
 
     public void swap (Word ortherWord) {
         Word temp = new Word(ortherWord);
-        ortherWord.setWord_explain(word_explain);
-        ortherWord.setWord_target(word_target);
+        ortherWord.setWordExplain(word_explain);
+        ortherWord.setWordTarget(word_target);
 
-        word_target = temp.getWord_target();
-        word_explain = temp.getWord_explain();
+        word_target = temp.getWordTarget();
+        word_explain = temp.getWordExplain();
     }
 
     /**
@@ -66,15 +68,15 @@ public class Word {
      * @return int > 0 if word > ortherWord
      */
     public int compareTo(Word ortherWord) {
-        if (word_target.compareTo(ortherWord.getWord_target()) > 0) {
+        if (word_target.compareTo(ortherWord.getWordTarget()) > 0) {
             return 1;
         } else {
             // if same word target
-            if (word_target.compareTo(ortherWord.getWord_target()) == 0) {
-                if (word_explain.compareTo(ortherWord.getWord_explain()) > 0) {
+            if (word_target.compareTo(ortherWord.getWordTarget()) == 0) {
+                if (word_explain.compareTo(ortherWord.getWordExplain()) > 0) {
                     return 1;
                 } else {
-                    if (word_explain.compareTo(ortherWord.getWord_explain()) == 0) {
+                    if (word_explain.compareTo(ortherWord.getWordExplain()) == 0) {
                         return 0;
                     } else {
                         return -1;
