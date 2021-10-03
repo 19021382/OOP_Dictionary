@@ -4,13 +4,15 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-
 import java.io.FileWriter;
 import java.io.FileReader;
 public class DictionaryManagement {
+
     final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
+
     Scanner sc = new Scanner(System.in);
+
     DictionaryManagement() {
         dictionary = new Dictionary();
     }
@@ -99,6 +101,9 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * same export to file
+     */
     public void writeToFile() {
         try {
             FileWriter write = new FileWriter(pathFile);
@@ -113,7 +118,25 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * same write to file
+     */
+    public void dictionaryExportToFile() {
+        try {
+            FileWriter writer = new FileWriter(pathFile);
+            for (int i = 0; i< dictionary.getLengthDictionary(); i++) {
+                Word word = dictionary.getWordIndex(i);
+                writer.write(word.getWordTarget() + "<>" + word.getWordExplain() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    /**
+     * look up in the dictionary
+     */
     public void dictionaryLookup() {
         System.out.print("Your word lookup: ");
         String charLookUp = sc.next();
@@ -127,4 +150,19 @@ public class DictionaryManagement {
         }
         System.out.println("Have " + count + " word in dictionary");
     }
+
+    public void dictionarySearcher() {
+        System.out.print("Enter your word : ");
+        String charLookUp = sc.next();
+        charLookUp = charLookUp.toLowerCase();
+        int count = 0;
+        for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
+            if (dictionary.getWordIndex(i).getWordTarget().contains(charLookUp)) {
+                System.out.println(dictionary.getWordIndex(i));
+                count ++;
+            }
+        }
+        System.out.println("Have " + count + " word in dictionary");
+    }
+
 }
