@@ -7,12 +7,12 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.*;
-public class DictionaryManagement extends Dictionary {
+public class DictionaryManagement {
     private static final String DATA_FILE_PATH = "D:\\GITHUB\\OOP_Dictionary\\dictionaries.txt";
     private static final String SPLITTING_CHARACTERS = "<>";
 
-    final String pathFile = "dictionaries.txt";
-    protected Dictionary dictionary;
+    private final String pathFile = "dictionaries.txt";
+    private Dictionary dictionary;
 
     Scanner sc = new Scanner(System.in);
 
