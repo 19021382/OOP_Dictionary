@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Dictionary {
     //Doi tu words sang database cho de nhin , doi tu private -> protected.
-    protected List<Word> database = new ArrayList<>();
+    private List<Word> database = new ArrayList<>();
 
     /**
      * construction no param
