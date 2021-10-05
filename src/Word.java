@@ -14,20 +14,21 @@ public class Word {
     }
 
     public Word(Word word) {
-        this.word_target = word.getWordTarget();
-        this.word_explain = word.getWordTarget();
+        this.word_target = word.getWord_target();
+        this.word_explain = word.getWord_target();
     }
 
-    public void setWordTarget(String word_target) {
+    //Thay doi ten ham tu setWordTarget sang setWord_target cho dong bo.
+    public void setWord_target(String word_target) {
         this.word_target = word_target;
     }
-    public void setWordExplain(String word_explain) {
+    public void setWord_explain(String word_explain) {
         this.word_explain = word_explain;
     }
-    public String getWordTarget() {
+    public String getWord_target() {
         return word_target;
     }
-    public String getWordExplain() {
+    public String getWord_explain() {
         return word_explain;
     }
 
@@ -36,7 +37,7 @@ public class Word {
     }
 
     public boolean equals(Word ortherWord) {
-        if (word_target.equals(ortherWord.getWordTarget()) && word_explain.equals(ortherWord.getWordExplain())) {
+        if (word_target.equals(ortherWord.getWord_target()) && word_explain.equals(ortherWord.getWord_explain())) {
             return true;
         }
         return false;
@@ -55,11 +56,11 @@ public class Word {
 
     public void swap (Word ortherWord) {
         Word temp = new Word(ortherWord);
-        ortherWord.setWordExplain(word_explain);
-        ortherWord.setWordTarget(word_target);
+        ortherWord.setWord_explain(word_explain);
+        ortherWord.setWord_target(word_target);
 
-        word_target = temp.getWordTarget();
-        word_explain = temp.getWordExplain();
+        word_target = temp.getWord_target();
+        word_explain = temp.getWord_explain();
     }
 
     /**
@@ -68,15 +69,15 @@ public class Word {
      * @return int > 0 if word > ortherWord
      */
     public int compareTo(Word ortherWord) {
-        if (word_target.compareTo(ortherWord.getWordTarget()) > 0) {
+        if (word_target.compareTo(ortherWord.getWord_target()) > 0) {
             return 1;
         } else {
             // if same word target
-            if (word_target.compareTo(ortherWord.getWordTarget()) == 0) {
-                if (word_explain.compareTo(ortherWord.getWordExplain()) > 0) {
+            if (word_target.compareTo(ortherWord.getWord_target()) == 0) {
+                if (word_explain.compareTo(ortherWord.getWord_explain()) > 0) {
                     return 1;
                 } else {
-                    if (word_explain.compareTo(ortherWord.getWordExplain()) == 0) {
+                    if (word_explain.compareTo(ortherWord.getWord_explain()) == 0) {
                         return 0;
                     } else {
                         return -1;
@@ -86,5 +87,13 @@ public class Word {
                 return -1;
             }
         }
+    }
+
+    //Them ham de check contain.
+    public boolean contain(String word) {
+        if (this.word_target.length() < word.length()) {
+            return false;
+        }
+        return word.equals(this.word_target.substring(0, word.length()));
     }
 }
