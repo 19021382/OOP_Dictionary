@@ -1,23 +1,24 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Dictionary {
-    //Doi tu words sang database cho de nhin , doi tu private -> protected.
-    private List<Word> database = new ArrayList<>();
+    private ArrayList<Word> words;
 
     /**
      * construction no param
      */
     Dictionary() {
-        database = new ArrayList<Word>(0);
+        words = new ArrayList<Word>(0);
     }
 
     public int getLengthDictionary() {
-        return database.size();
+        return words.size();
     }
 
+    public Word getWordIndex(int index) {
+        return words.get(index);
+    }
     public void getInfoWord(int index) {
-        database.get(index).showWord();
+        words.get(index).showWord();
     }
 
     public void addWordToDictionary(Word word) {
@@ -28,10 +29,10 @@ public class Dictionary {
             check = true;
         }
         if (!check) {
-            this.database.add(word);
-            System.out.println("Dictonary add " + word.getWord_target());
+            this.words.add(word);
+            System.out.println("Dictonary add " + word.getWordTarget());
         } else {
-            System.out.println("Dictionary have word " + word.getWord_target());
+            System.out.println("Dictionary have word " + word.getWordTarget());
         }
     }
 
@@ -41,28 +42,28 @@ public class Dictionary {
     }
 
     public void printWordIndex(int index) {
-        Word word = this.database.get(index);
+        Word word = this.words.get(index);
         word.showWord();
     }
 
     public void removeWordInDictionary(Word word) {
         //int index = this.words.indexOf(word);
         int index = indexOf(word);
-        this.database.remove(index);
+        this.words.remove(index);
     }
 
     public void printDictionary() {
         System.out.println("                        English               Vietnamese");
-        for (int i = 0; i < this.database.size(); i++) {
-            System.out.printf("%-5d %s \n", i, this.database.get(i));
+        for (int i = 0; i < this.words.size(); i++) {
+            System.out.printf("%-5d %s \n", i, this.words.get(i));
         }
     }
 
     public void sortDictionary() {
-        for(int i = 0; i < database.size() - 1; i++) {
-            for(int j = i +1; j < database.size(); j++) {
-                if (database.get(i).compareTo(database.get(j)) > 0) {
-                    database.get(i).swap(database.get(j));
+        for(int i = 0; i < words.size() - 1; i++) {
+            for(int j = i +1; j < words.size(); j++) {
+                if (words.get(i).compareTo(words.get(j)) > 0) {
+                    words.get(i).swap(words.get(j));
                 }
             }
         }
@@ -75,19 +76,18 @@ public class Dictionary {
      */
     public int indexOf(Word word) {
         int begin = 0;
-        int end = database.size()-1;
+        int end = words.size()-1;
         int mid = (begin + end)/2;
         while (begin <= end) {
-            if (word.equals(database.get(mid)))    return mid;
-            if (word.compareTo(database.get(mid)) < 0) {
+            if (word.equals(words.get(mid)))    return mid;
+            if (word.compareTo(words.get(mid)) < 0) {
                 end = mid -1;
             }
-            if (word.compareTo(database.get(mid)) > 0) {
+            if (word.compareTo(words.get(mid)) > 0) {
                 begin = mid + 1;
             }
             mid = (begin + end)/2;
         }
         return -1;
     }
-
 }

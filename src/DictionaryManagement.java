@@ -6,13 +6,10 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.FileReader;
-import java.io.*;
 public class DictionaryManagement {
-    private static final String DATA_FILE_PATH = "D:\\GITHUB\\OOP_Dictionary\\dictionaries.txt";
-    private static final String SPLITTING_CHARACTERS = "<>";
 
-    private final String pathFile = "dictionaries.txt";
-    private Dictionary dictionary;
+    final String pathFile = "dictionaries.txt";
+    protected Dictionary dictionary;
 
     Scanner sc = new Scanner(System.in);
 
@@ -104,91 +101,6 @@ public class DictionaryManagement {
         }
     }
 
-    //Them ham insertFromFile.
-    public void insertFromFile() {
-        BufferedReader reader;
-        try {
-            reader =
-                    new BufferedReader(
-                            new FileReader(DATA_FILE_PATH));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] temp = line.split(SPLITTING_CHARACTERS);
-                Word Temp = new Word(temp[0], SPLITTING_CHARACTERS + temp[1]);
-                database.add(Temp);
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //Them ham deleteWord.
-    public void deleteWord(String word) throws IOException {
-        File inFile = new File(DATA_FILE_PATH);
-        if (!inFile.isFile()) {
-            return;
-        }
-        File tempFile = new File(inFile.getAbsoluteFile() + ".tmp");
-        BufferedReader br = new BufferedReader(new FileReader(DATA_FILE_PATH));
-        PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
-
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] temp = line.split(SPLITTING_CHARACTERS);
-            if (!temp[0].equals(word)) {
-                pw.println(line);
-                pw.flush();
-            }
-        }
-        pw.close();
-        br.close();
-
-        if (!inFile.delete()) {
-            System.out.println("Couldn't delete file.");
-            return;
-        }
-        if (!tempFile.renameTo(inFile)) {
-            System.out.println("Couldn't delete file.");
-        }
-    }
-
-    //Them ham export.
-    public void dictionaryExportToFile(String word, String mean) {
-        BufferedWriter bw = null;
-        FileWriter fw = null;
-        String word_add = word + "<>" + mean;
-        try {
-            File file = new File(DATA_FILE_PATH);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            fw = new FileWriter(file.getAbsoluteFile(), true);
-            bw = new BufferedWriter(fw);
-            bw.write(word_add);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bw != null) bw.close();
-                if (fw != null) fw.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    //Them ham lookup tra ve Word.
-    public Word dictionaryLookup(String a) {
-        for (Word e : database) {
-            if (e.getWord_target().equals(a)) {
-                return e;
-            }
-        }
-        return null;
-    }
-}
     /**
      * same export to file
      */
@@ -197,7 +109,7 @@ public class DictionaryManagement {
             FileWriter write = new FileWriter(pathFile);
             for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
                 Word word = dictionary.getWordIndex(i);
-                write.write(word.getWord_target() + "<>" + word.getWord_explain() + "\n");
+                write.write(word.getWordTarget() + "<>" + word.getWordExplain() + "\n");
 
             }
             write.close();
@@ -214,7 +126,7 @@ public class DictionaryManagement {
             FileWriter writer = new FileWriter(pathFile);
             for (int i = 0; i< dictionary.getLengthDictionary(); i++) {
                 Word word = dictionary.getWordIndex(i);
-                writer.write(word.getWord_target() + "<>" + word.getWord_explain() + "\n");
+                writer.write(word.getWordTarget() + "<>" + word.getWordExplain() + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -252,7 +164,5 @@ public class DictionaryManagement {
         }
         System.out.println("Have " + count + " word in dictionary");
     }
-
-}
 
 }
