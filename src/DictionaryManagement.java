@@ -1,11 +1,10 @@
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.FileReader;
+
 public class DictionaryManagement {
 
     final String pathFile = "dictionaries.txt";
@@ -163,6 +162,50 @@ public class DictionaryManagement {
             }
         }
         System.out.println("Have " + count + " word in dictionary");
+    }
+
+    //Them ham doc-ghi file.
+    public void insertFromFile() {
+        BufferedReader reader;
+        try {
+            reader =
+                    new BufferedReader(
+                            new FileReader(pathFile));
+            String line = reader.readLine();
+            while (line != null) {
+                String[] temp = line.split("<>");
+                Word Temp = new Word(temp[0], "<>" + temp[1]);
+                database.add(Temp);
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dictionaryExportToFile(String word, String mean) {
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+        String word_add = word + "<>" + mean;
+        try {
+            File file = new File(pathFile);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            fw = new FileWriter(file.getAbsoluteFile(), true);
+            bw = new BufferedWriter(fw);
+            bw.write(word_add);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null) bw.close();
+                if (fw != null) fw.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }
