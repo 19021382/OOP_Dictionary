@@ -90,4 +90,14 @@ public class Dictionary {
         }
         return -1;
     }
+
+    //Them ham tim kiem.
+    public Word dictionaryLookup(String a) {
+        for (Word e : database) {
+            if (e.getWordTarget().equals(a)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }
