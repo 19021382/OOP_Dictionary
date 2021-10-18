@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Dictionary.iml" filepath="$PROJECT_DIR$/Dictionary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OOP_Dictionary.iml" filepath="$PROJECT_DIR$/OOP_Dictionary.iml" />
     </modules>
   </component>
 </project>

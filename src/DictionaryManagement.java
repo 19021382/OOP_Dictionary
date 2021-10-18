@@ -1,9 +1,12 @@
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 
 public class DictionaryManagement {
 
@@ -207,5 +210,4 @@ public class DictionaryManagement {
             }
         }
     }
-
 }
