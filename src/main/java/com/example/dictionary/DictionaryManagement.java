@@ -1,14 +1,20 @@
 package com.example.dictionary;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import com.sun.speech.freetts.VoiceManager;
+import com.sun.speech.freetts.Voice;
 
 import java.io.FileWriter;
 import java.io.FileReader;
 public class DictionaryManagement {
+    private static final String VOICENAME = "kevin16";
+    public VoiceManager voiceManager = VoiceManager.getInstance();
+    public Voice voice = voiceManager.getVoice(VOICENAME);
     final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
     Scanner sc = new Scanner(System.in);
@@ -127,5 +133,25 @@ public class DictionaryManagement {
             }
         }
         System.out.println("Have " + count + " word in dictionary");
+    }
+
+    public void TalkUS(ActionEvent actionEvent) {
+        String word = text_search.getText();
+        voice.allocate();
+        try {
+            voice.speak(word);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void TalkUK(ActionEvent actionEvent) {
+        String word = text_search.getText();
+        voice.allocate();
+        try {
+            voice.speak(word);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
