@@ -9,6 +9,9 @@ import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
 public class DictionaryManagement {
+    private static final String VOICENAME = "kevin16";
+    public VoiceManager voiceManager = VoiceManager.getInstance();
+    public Voice voice = voiceManager.getVoice(VOICENAME);
 
     final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
@@ -208,6 +211,26 @@ public class DictionaryManagement {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public void TalkUS(ActionEvent actionEvent) {
+        String word = text_search.getText();
+        voice.allocate();
+        try {
+            voice.speak(word);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void TalkUK(ActionEvent actionEvent) {
+        String word = text_search.getText();
+        voice.allocate();
+        try {
+            voice.speak(word);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
