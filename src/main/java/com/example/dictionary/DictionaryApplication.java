@@ -260,6 +260,7 @@ public class DictionaryApplication extends Application{
 
         Button back = new Button("BACK");
         back.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        back.setAlignment(Pos.BASELINE_RIGHT);
         back.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == back) {
                 window.setScene(scene1);
@@ -282,7 +283,7 @@ public class DictionaryApplication extends Application{
         HBox target = new HBox();
         TextField setTarget = new TextField();
         setTarget.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
-        Button setter = new Button("SET WORD EXPLAIN");
+        Button setter = new Button("SET WORD TARGET");
         setter.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
         setter.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == setter) {
@@ -301,8 +302,43 @@ public class DictionaryApplication extends Application{
         target.getChildren().addAll(setter, setTarget);
         target.setSpacing(50);
 
+
+        HBox explain = new HBox();
+        TextField setExplain = new TextField();
+        explain.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        Button setterExplain = new Button("SET WORD EXPLAIN");
+        setterExplain.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        setterExplain.setOnAction(actionEvent -> {
+            if (actionEvent.getSource() == setterExplain) {
+                String newExplain = setExplain.getText().trim();
+                if (newExplain.isEmpty()) {
+                    System.out.println("word explain is empty");
+                } else {
+                    int index = dictionary.indexOf(word);
+                    dictionary.getWordIndex(index).setWordExplain(newExplain);
+                    dictionary.showAllWord();
+                    dictionary.writeToFile();
+                    window.setScene(changeWord(dictionary.getWordIndex(index)));
+                }
+            }
+        });
+        explain.getChildren().addAll(setterExplain, setExplain);
+        explain.setSpacing(50);
+
+
+        HBox listen = new HBox();
+        Button listenWord = new Button("LISTEN");
+        listenWord.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        listenWord.setOnAction(actionEvent -> {
+            if (actionEvent.getSource() == listenWord) {
+                dictionary.listenedWord(word);
+            }
+        });
+        listen.getChildren().addAll(listenWord);
+
+
         VBox layout = new VBox();
-        layout.getChildren().addAll(h1, h2, removeHBox, target, back);
+        layout.getChildren().addAll(h1, h2, removeHBox, target, explain, listen, back);
         layout.setSpacing(50);
         Scene scene = new Scene(layout, 700, 600, Color.RED);
 
