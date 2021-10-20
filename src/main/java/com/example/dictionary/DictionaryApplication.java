@@ -1,5 +1,4 @@
-package com.example.javafx;
-
+package com.example.dictionary;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
