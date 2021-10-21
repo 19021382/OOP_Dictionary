@@ -1,3 +1,6 @@
+import javax.speech.Central;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.nio.file.Files;
@@ -18,6 +21,44 @@ public class DictionaryManagement {
     /**
      * insert word to dictionary
      */
+
+    void SpeakUS(Word word) {
+        try {
+            // Set property as Kevin Dictionary
+            System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us"
+                    + ".cmu_us_kal.KevinVoiceDirectory");
+
+            // Register Engine
+            Central.registerEngineCentral("com.sun.speech.freetts"
+                    + ".jsapi.FreeTTSEngineCentral");
+
+            // Create a Synthesizer
+            Synthesizer synthesizer
+                    = Central.createSynthesizer(
+                    new SynthesizerModeDesc(Locale.US));
+
+            // Allocate synthesizer
+            synthesizer.allocate();
+
+            // Resume Synthesizer
+            synthesizer.resume();
+
+            // Speaks the given text
+            // until the queue is empty.
+            synthesizer.speakPlainText(
+                    word.getWordTarget(), null);
+            synthesizer.waitEngineState(
+                    Synthesizer.QUEUE_EMPTY);
+
+            // Deallocate the Synthesizer.
+            synthesizer.deallocate();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void insertFromCommandLine()
     {
         System.out.print("Target word: ");
@@ -177,25 +218,6 @@ public class DictionaryManagement {
     }
 
     //Them ham doc-ghi file.
-    /*public void insertFromFile() {
-        BufferedReader reader;
-        try {
-            reader =
-                    new BufferedReader(
-                            new FileReader(pathFile));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] temp = line.split("<>");
-                Word Temp = new Word(temp[0], "<>" + temp[1]);
-                database.add(Temp);
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public void dictionaryExportToFile(String word, String mean) {
         BufferedWriter bw = null;
         FileWriter fw = null;
