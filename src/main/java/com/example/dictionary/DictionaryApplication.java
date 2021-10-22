@@ -1,13 +1,11 @@
 package com.example.javafx;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -60,14 +58,17 @@ public class DictionaryApplication extends Application{
         exit.setLayoutX(400);
         exit.setLayoutY(100);
         exit.setLineSpacing(50);
-        exit.setStyle("-fx-font: 25 arial; -fx-base: #b6e7c9;");
+        exit.setMaxWidth(250);
+        exit.setMinWidth(250);
+        exit.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
         Button addWord = new Button("Goto add word");
-        addWord.setStyle("-fx-font: 25 arial; -fx-base: #b6e7c9;");
+        addWord.setMinWidth(250);
+        addWord.setMaxWidth(250);
+        addWord.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
 
         addWord.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == addWord) {
                 addWordGUI();
-                //window.setScene(scene2);
             }
         });
 
@@ -78,29 +79,30 @@ public class DictionaryApplication extends Application{
         });
 
         HBox layoutAddWord = new HBox();
-        layoutAddWord.getChildren().addAll(addWord, new Label("                      "), exit);
+        layoutAddWord.getChildren().addAll(addWord, exit);
         layoutAddWord.setSpacing(75);
         layoutAddWord.setAlignment(Pos.BASELINE_CENTER);
         layoutAddWord.getBoundsInParent();
-        //layoutAddWord.setAlignment(Pos.BOTTOM_RIGHT);
-        //layoutAddWord.getChildren().add(new Label("      "));
 
         //search
         Button search = new Button("Search");
-        search.setStyle("-fx-font: 25 arial; -fx-base: #b6e7c9;");
+        search.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        search.setMaxWidth(250);
+        search.setMinWidth(250);
         search.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == search) {
-                //addWordGUI();
                 window.setScene(scene2);
             }
         });
 
 
-        Button showAll = new Button("SHOW ALL WORD");
-        showAll.setStyle("-fx-font: 25 arial; -fx-base: #b6e7c9;");
+        Button showAll = new Button("Show all word");
+        showAll.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        showAll.setMinWidth(250);
+        showAll.setMaxWidth(250);
         showAll.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == showAll) {
-
+                window.setScene(showAll());
             }
         });
         // layout search
@@ -119,7 +121,6 @@ public class DictionaryApplication extends Application{
         goBack.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == goBack) {
                 window.setScene(scene1);
-                //addWordGUI();
             }
         });
 
@@ -166,7 +167,6 @@ public class DictionaryApplication extends Application{
                 System.out.println(wordExplain);
                 Word word = new Word(wordTarget, wordExplain);
                 dictionary.insertFromCommandLine(word);
-
                 dictionary.sort();
                 dictionary.writeToFile();
             }
@@ -176,7 +176,6 @@ public class DictionaryApplication extends Application{
     private Scene searchScene() {
         Label sameTitile = new Label ("                     WORD SEARCH");
         sameTitile.setFont(new Font("Arial", 20));
-        //sameTitile.setBackground(new BackgroundFill(Color.RED));
         sameTitile.setAlignment(Pos.BASELINE_CENTER);
 
         TextField word = new TextField();
@@ -221,10 +220,14 @@ public class DictionaryApplication extends Application{
                         int finalI = i;
                         newBt.setOnAction(actionEvent1 -> {
                             if (actionEvent1.getSource() == newBt) {
+                                for (int j = 0; j < words.size(); j++) {
+                                    layoutWord.getChildren().remove(0);
+                                }
                                 window.setScene(changeWord(words.get(finalI)));
                             }
                         });
                         layoutWord.getChildren().add(newBt);
+
                     }
                     System.out.println();
                 }
@@ -240,8 +243,7 @@ public class DictionaryApplication extends Application{
         layout.getChildren().addAll(sameTitile, layout0, layoutSearch1, line1, label, layoutWord);
         layout.setSpacing(30);
 
-        Scene scene = new Scene(layout, 800, 600);
-        return scene;
+        return new Scene(layout, 800, 600);
     }
 
     private Scene changeWord(Word word) {
@@ -260,6 +262,7 @@ public class DictionaryApplication extends Application{
 
         Button back = new Button("BACK");
         back.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        back.setAlignment(Pos.BASELINE_RIGHT);
         back.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == back) {
                 window.setScene(scene1);
@@ -282,7 +285,7 @@ public class DictionaryApplication extends Application{
         HBox target = new HBox();
         TextField setTarget = new TextField();
         setTarget.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
-        Button setter = new Button("SET WORD EXPLAIN");
+        Button setter = new Button("SET WORD TARGET");
         setter.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
         setter.setOnAction(actionEvent -> {
             if (actionEvent.getSource() == setter) {
@@ -301,13 +304,118 @@ public class DictionaryApplication extends Application{
         target.getChildren().addAll(setter, setTarget);
         target.setSpacing(50);
 
-        VBox layout = new VBox();
-        layout.getChildren().addAll(h1, h2, removeHBox, target, back);
-        layout.setSpacing(50);
-        Scene scene = new Scene(layout, 700, 600, Color.RED);
 
-        return scene;
+        HBox explain = new HBox();
+        TextField setExplain = new TextField();
+        explain.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        Button setterExplain = new Button("SET WORD EXPLAIN");
+        setterExplain.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        setterExplain.setOnAction(actionEvent -> {
+            if (actionEvent.getSource() == setterExplain) {
+                String newExplain = setExplain.getText().trim();
+                if (newExplain.isEmpty()) {
+                    System.out.println("word explain is empty");
+                } else {
+                    int index = dictionary.indexOf(word);
+                    dictionary.getWordIndex(index).setWordExplain(newExplain);
+                    dictionary.showAllWord();
+                    dictionary.writeToFile();
+                    window.setScene(changeWord(dictionary.getWordIndex(index)));
+                }
+            }
+        });
+        explain.getChildren().addAll(setterExplain, setExplain);
+        explain.setSpacing(50);
+
+
+        HBox listen = new HBox();
+        Button listenWord = new Button("LISTEN");
+        listenWord.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        listenWord.setOnAction(actionEvent -> {
+            if (actionEvent.getSource() == listenWord) {
+                dictionary.listenedWord(word);
+            }
+        });
+        listen.getChildren().addAll(listenWord);
+
+
+        VBox layout = new VBox();
+        layout.getChildren().addAll(h1, h2, removeHBox, target, explain, listen, back);
+        layout.setSpacing(50);
+
+        return new Scene(layout, 700, 600, Color.RED);
     }
+
+    private Scene showAll() {
+        VBox layout = new VBox();
+
+        HBox head = new HBox();
+        Button stt = new Button("STT");
+        stt.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        //stt.setMaxWidth(200);
+        stt.setMinWidth(100);
+
+        Button wordExplain = new Button("Word explain");
+        wordExplain.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        wordExplain.setMinWidth(300);
+
+
+        Button wordTarget = new Button("Word target");
+        wordTarget.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        wordTarget.setMinWidth(300);
+
+        head.getChildren().addAll(stt, wordExplain, wordTarget);
+
+
+        HBox end = new HBox();
+        Button back = new Button("BACK");
+        back.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        back.setAlignment(Pos.BASELINE_RIGHT);
+        back.setOnAction(actionEvent -> {
+            if (actionEvent.getSource() == back) {
+                window.setScene(scene1);
+            }
+        });
+        back.setAlignment(Pos.BASELINE_RIGHT);
+        end.getChildren().addAll(back);
+        end.setAlignment(Pos.BASELINE_RIGHT);
+
+        layout.getChildren().addAll(head);
+        for (int i = 0; i < dictionary.lengthOfDictionary(); i++) {
+            HBox mid = new HBox();
+            Button n = new Button(String.valueOf(i + 1));
+            n.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+            n.setMinWidth(100);
+
+            Button wordT = new Button(dictionary.getWordIndex(i).getWordTarget());
+            wordT.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+            wordT.setMinWidth(300);
+
+
+            Button wordE = new Button((dictionary.getWordIndex(i).getWordExplain()));
+            wordE.setMinWidth(300);
+            wordE.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+
+            Button view = new Button("Show");
+            view.setMinWidth(100);
+            view.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+
+            int finalI = i;
+            view.setOnAction(actionEvent -> {
+                if (actionEvent.getSource() == view) {
+                    window.setScene(changeWord(dictionary.getWordIndex(finalI)));
+                }
+            });
+            mid.getChildren().addAll(n, wordT, wordE, view);
+            layout.getChildren().add(mid);
+        }
+
+        layout.getChildren().addAll(new Label(), end);
+        return new Scene(layout, 800, 700);
+
+    }
+
+
 }
 
 
