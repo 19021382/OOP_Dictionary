@@ -6,20 +6,57 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import javax.speech.Central;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
 import com.sun.speech.freetts.VoiceManager;
 import com.sun.speech.freetts.Voice;
 
 import java.io.FileWriter;
 import java.io.FileReader;
 public class DictionaryManagement {
-    private static final String VOICENAME = "kevin16";
-    public VoiceManager voiceManager = VoiceManager.getInstance();
-    public Voice voice = voiceManager.getVoice(VOICENAME);
     final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
     Scanner sc = new Scanner(System.in);
     DictionaryManagement() {
         dictionary = new Dictionary();
+    }
+
+    void SpeakUS(Word word) {
+        try {
+            // Set property as Kevin Dictionary
+            System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us"
+                    + ".cmu_us_kal.KevinVoiceDirectory");
+
+            // Register Engine
+            Central.registerEngineCentral("com.sun.speech.freetts"
+                    + ".jsapi.FreeTTSEngineCentral");
+
+            // Create a Synthesizer
+            Synthesizer synthesizer
+                    = Central.createSynthesizer(
+                    new SynthesizerModeDesc(Locale.US));
+
+            // Allocate synthesizer
+            synthesizer.allocate();
+
+            // Resume Synthesizer
+            synthesizer.resume();
+
+            // Speaks the given text
+            // until the queue is empty.
+            synthesizer.speakPlainText(
+                    word.getWordTarget(), null);
+            synthesizer.waitEngineState(
+                    Synthesizer.QUEUE_EMPTY);
+
+            // Deallocate the Synthesizer.
+            synthesizer.deallocate();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -135,23 +172,3 @@ public class DictionaryManagement {
         System.out.println("Have " + count + " word in dictionary");
     }
 
-    public void TalkUS(ActionEvent actionEvent) {
-        String word = text_search.getText();
-        voice.allocate();
-        try {
-            voice.speak(word);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void TalkUK(ActionEvent actionEvent) {
-        String word = text_search.getText();
-        voice.allocate();
-        try {
-            voice.speak(word);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-}

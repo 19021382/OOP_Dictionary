@@ -71,6 +71,21 @@ public class Dictionary {
         }
     }
 
+    public void insertionSortDictionary() {
+        for (int i = 0; i < words.size(); i++) {
+            boolean isSwap = false;
+            for (int j = words.size() - 1; j > 1; j--) {
+                if (words.get(j).compareTo(words.get(j-1)) < 0) {
+                    words.get(j).swap(words.get(j-1));
+                    isSwap = true;
+                }
+            }
+            if (!isSwap) {
+                break;
+            }
+        }
+    }
+
     /**
      * use the binaryFinding and it is reused for many method
      * @param word

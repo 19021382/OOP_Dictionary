@@ -1,3 +1,6 @@
+import javax.speech.Central;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.nio.file.Files;
@@ -5,14 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import com.sun.speech.freetts.Voice;
-import com.sun.speech.freetts.VoiceManager;
-
 public class DictionaryManagement {
-    private static final String VOICENAME = "kevin16";
-    public VoiceManager voiceManager = VoiceManager.getInstance();
-    public Voice voice = voiceManager.getVoice(VOICENAME);
-
     final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
 
@@ -25,6 +21,44 @@ public class DictionaryManagement {
     /**
      * insert word to dictionary
      */
+
+    void SpeakUS(Word word) {
+        try {
+            // Set property as Kevin Dictionary
+            System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us"
+                    + ".cmu_us_kal.KevinVoiceDirectory");
+
+            // Register Engine
+            Central.registerEngineCentral("com.sun.speech.freetts"
+                    + ".jsapi.FreeTTSEngineCentral");
+
+            // Create a Synthesizer
+            Synthesizer synthesizer
+                    = Central.createSynthesizer(
+                    new SynthesizerModeDesc(Locale.US));
+
+            // Allocate synthesizer
+            synthesizer.allocate();
+
+            // Resume Synthesizer
+            synthesizer.resume();
+
+            // Speaks the given text
+            // until the queue is empty.
+            synthesizer.speakPlainText(
+                    word.getWordTarget(), null);
+            synthesizer.waitEngineState(
+                    Synthesizer.QUEUE_EMPTY);
+
+            // Deallocate the Synthesizer.
+            synthesizer.deallocate();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void insertFromCommandLine()
     {
         System.out.print("Target word: ");
@@ -57,10 +91,10 @@ public class DictionaryManagement {
         Word word = new Word(word_target, word_explain);
         if (dictionary.containsWordInDictionary(word)) {
             dictionary.removeWordInDictionary(word);
-            System.out.println("This word is remove dictionary");
+            System.out.println("This word is removed from dictionary!");
         }
         else {
-            System.out.println("This word is't contain");
+            System.out.println("This word is't contained!");
         }
     }
 
@@ -78,8 +112,16 @@ public class DictionaryManagement {
         }
     }
 
+    public void printDictionary() {
+        dictionary.printDictionary();
+    }
+
     public void sortDictionary() {
         dictionary.sortDictionary();
+    }
+
+    public void insertionSortDictionary() {
+        dictionary.insertionSortDictionary();
     }
 
     public int indexOf(Word word) {
@@ -167,29 +209,15 @@ public class DictionaryManagement {
                 count ++;
             }
         }
-        System.out.println("Have " + count + " word in dictionary");
+        if(count > 1) {
+            System.out.println("Have " + count + " words in dictionary!");
+        } else {
+            System.out.println("Have " + count + " word in dictionary!");
+        }
+
     }
 
     //Them ham doc-ghi file.
-    public void insertFromFile() {
-        BufferedReader reader;
-        try {
-            reader =
-                    new BufferedReader(
-                            new FileReader(pathFile));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] temp = line.split("<>");
-                Word Temp = new Word(temp[0], "<>" + temp[1]);
-                database.add(Temp);
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void dictionaryExportToFile(String word, String mean) {
         BufferedWriter bw = null;
         FileWriter fw = null;
@@ -214,23 +242,4 @@ public class DictionaryManagement {
         }
     }
 
-    public void TalkUS(ActionEvent actionEvent) {
-        String word = text_search.getText();
-        voice.allocate();
-        try {
-            voice.speak(word);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void TalkUK(ActionEvent actionEvent) {
-        String word = text_search.getText();
-        voice.allocate();
-        try {
-            voice.speak(word);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 }

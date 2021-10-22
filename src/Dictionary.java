@@ -53,7 +53,7 @@ public class Dictionary {
     }
 
     public void printDictionary() {
-        System.out.println("                        English               Vietnamese");
+        System.out.println("INDEX       ENGLISH             VIETNAMESE");
         for (int i = 0; i < this.database.size(); i++) {
             System.out.printf("%-5d %s \n", i, this.database.get(i));
         }
@@ -65,6 +65,21 @@ public class Dictionary {
                 if (database.get(i).compareTo(database.get(j)) > 0) {
                     database.get(i).swap(database.get(j));
                 }
+            }
+        }
+    }
+
+    public void insertionSortDictionary() {
+        for (int i = 0; i < database.size(); i++) {
+            boolean isSwap = false;
+            for (int j = database.size() - 1; j > 1; j--) {
+                if (database.get(j).compareTo(database.get(j-1)) < 0) {
+                    database.get(j).swap(database.get(j-1));
+                    isSwap = true;
+                }
+            }
+            if (!isSwap) {
+                break;
             }
         }
     }
