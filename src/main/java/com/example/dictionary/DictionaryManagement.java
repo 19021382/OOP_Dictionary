@@ -1,11 +1,15 @@
 package com.example.dictionary;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
@@ -18,6 +22,7 @@ public class DictionaryManagement {
     final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
     Scanner sc = new Scanner(System.in);
+
     DictionaryManagement() {
         dictionary = new Dictionary();
     }
@@ -52,9 +57,7 @@ public class DictionaryManagement {
 
             // Deallocate the Synthesizer.
             synthesizer.deallocate();
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -62,8 +65,7 @@ public class DictionaryManagement {
     /**
      * insert word to dictionary
      */
-    public void insertFromCommandLine()
-    {
+    public void insertFromCommandLine() {
         System.out.print("Target word: ");
         String word_target = sc.nextLine();
         word_target = word_target.toLowerCase();
@@ -77,6 +79,7 @@ public class DictionaryManagement {
         Word word = new Word(word_target, word_explain);
         dictionary.addWordToDictionary(word);
     }
+
     public void insertFromCommandLine(Word word) {
         dictionary.addWordToDictionary(word);
     }
@@ -95,8 +98,7 @@ public class DictionaryManagement {
         if (dictionary.containsWordInDictionary(word)) {
             dictionary.removeWordInDictionary(word);
             System.out.println("This word is remove dictionary");
-        }
-        else {
+        } else {
             System.out.println("This word is't contain");
         }
     }
@@ -124,7 +126,6 @@ public class DictionaryManagement {
     }
 
     /**
-     *
      * get information word from file.
      */
     public void insertFromFile() {
@@ -166,9 +167,22 @@ public class DictionaryManagement {
         for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
             if (dictionary.getWordIndex(i).getWordTarget().contains(charLookUp)) {
                 System.out.println(dictionary.getWordIndex(i));
-                count ++;
+                count++;
             }
         }
         System.out.println("Have " + count + " word in dictionary");
     }
+
+    public static synchronized void playSound(String name) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("D:/Javafx/" + name + ".wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
+}
 
