@@ -1,3 +1,6 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
@@ -239,6 +242,18 @@ public class DictionaryManagement {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public static synchronized void playSound(String name) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("D:/Javafx/" + name + ".wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
         }
     }
 
