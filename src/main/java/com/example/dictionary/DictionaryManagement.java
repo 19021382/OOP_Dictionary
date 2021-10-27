@@ -1,71 +1,32 @@
-package com.example.dictionary;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+package com.example.javafx;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.speech.Central;
-import javax.speech.synthesis.Synthesizer;
-import javax.speech.synthesis.SynthesizerModeDesc;
-import com.sun.speech.freetts.VoiceManager;
-import com.sun.speech.freetts.Voice;
-
+import java.io.File;
 import java.io.FileWriter;
-import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
 public class DictionaryManagement {
+
     final String pathFile = "dictionaries.txt";
     protected Dictionary dictionary;
     Scanner sc = new Scanner(System.in);
-
     DictionaryManagement() {
         dictionary = new Dictionary();
-    }
-
-    void SpeakUS(Word word) {
-        try {
-            // Set property as Kevin Dictionary
-            System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us"
-                    + ".cmu_us_kal.KevinVoiceDirectory");
-
-            // Register Engine
-            Central.registerEngineCentral("com.sun.speech.freetts"
-                    + ".jsapi.FreeTTSEngineCentral");
-
-            // Create a Synthesizer
-            Synthesizer synthesizer
-                    = Central.createSynthesizer(
-                    new SynthesizerModeDesc(Locale.US));
-
-            // Allocate synthesizer
-            synthesizer.allocate();
-
-            // Resume Synthesizer
-            synthesizer.resume();
-
-            // Speaks the given text
-            // until the queue is empty.
-            synthesizer.speakPlainText(
-                    word.getWordTarget(), null);
-            synthesizer.waitEngineState(
-                    Synthesizer.QUEUE_EMPTY);
-
-            // Deallocate the Synthesizer.
-            synthesizer.deallocate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
      * insert word to dictionary
      */
-    public void insertFromCommandLine() {
+    public void insertFromCommandLine()
+    {
         System.out.print("Target word: ");
         String word_target = sc.nextLine();
         word_target = word_target.toLowerCase();
@@ -98,7 +59,8 @@ public class DictionaryManagement {
         if (dictionary.containsWordInDictionary(word)) {
             dictionary.removeWordInDictionary(word);
             System.out.println("This word is remove dictionary");
-        } else {
+        }
+        else {
             System.out.println("This word is't contain");
         }
     }
@@ -126,6 +88,7 @@ public class DictionaryManagement {
     }
 
     /**
+     *
      * get information word from file.
      */
     public void insertFromFile() {
@@ -144,20 +107,21 @@ public class DictionaryManagement {
         }
     }
 
+    /**
+     * use commandline version
+     */
     public void writeToFile() {
         try {
             FileWriter write = new FileWriter(pathFile);
             for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
                 Word word = dictionary.getWordIndex(i);
                 write.write(word.getWordTarget() + "<>" + word.getWordExplain() + "\n");
-
             }
             write.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     public void dictionaryLookup() {
         System.out.print("Your word lookup: ");
@@ -167,10 +131,80 @@ public class DictionaryManagement {
         for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
             if (dictionary.getWordIndex(i).getWordTarget().contains(charLookUp)) {
                 System.out.println(dictionary.getWordIndex(i));
-                count++;
+                count ++;
             }
         }
         System.out.println("Have " + count + " word in dictionary");
+    }
+
+    /**
+     * for 0 -> end
+     *
+     * @param wordLookup
+     * @return
+     */
+    public String dictionaryLookup(String wordLookup) {
+        System.out.println("Your word lookup: " + wordLookup);
+        String res = "Word Target        Word Explain  \n";
+        for (int i = 0; i < dictionary.getLengthDictionary(); i++) {
+            if (dictionary.getWordIndex(i).getWordTarget().contains(wordLookup)) {
+                res += dictionary.getWordIndex(i) + "\n";
+            }
+        }
+        return res;
+    }
+
+    /**
+     * for 0 -> end
+     * @param wordLookup
+     * @param b
+     * @return word target of dictionảy
+     */
+    public String dictionaryLookup(String wordLookup, boolean b) {
+        if (b) {
+            System.out.println("Your word lookup: " + wordLookup);
+            //String res = "Word Target        Word Explain  \n";
+            String res = "";
+            if (-1 != dictionary.indexOf(wordLookup)) {
+                int n = dictionary.indexOf(wordLookup);
+                res += getWordIndex(n).getWordTarget() + "    " + getWordIndex(n).getWordExplain() + "\n";
+            } else {
+                return "no have word";
+            }
+            return res;
+        } else {
+            return "Hello World";
+        }
+    }
+
+    /**
+     * binary search
+     *
+     * @param wordLookup
+     * @return
+     */
+    public List<Word> lookup(String wordLookup) {
+        List<Word> list = new LinkedList<Word>();
+        int n = dictionary.indexOf(wordLookup);
+        if (n != -1) {
+            list.add(dictionary.getWordIndex(n));
+            return list;
+        }
+        System.out.println(wordLookup);
+        System.out.println(n);
+        return null;
+    }
+
+    public static synchronized void playSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("D:/Javafx/file.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
     }
 
     public static synchronized void playSound(String name) {
@@ -184,5 +218,41 @@ public class DictionaryManagement {
             ex.printStackTrace();
         }
     }
-}
 
+
+    public int lengthOfDictionary() {
+        return dictionary.getLengthDictionary();
+    }
+
+    public void removeWordInDictionary (Word word) {
+        dictionary.removeWordInDictionary(word);
+    }
+
+    public void sort() {
+        dictionary.insertionSortDictionary();
+    }
+
+    public Word getWordIndex(int index) {
+        return dictionary.getWordIndex(index);
+    }
+
+    public void connectDatabase() {
+        try {
+            Connection connect = DriverManager.getConnection("jdbc:sqlite:D:\\database\\dict_hh.db");
+            Statement state = connect.createStatement();
+            ResultSet res = state.executeQuery("SELECT word, Description FROM av");
+            while (res.next()) {
+                Word word = new Word();
+                word.setWordTarget(res.getString("word"));
+                word.setWordExplain(res.getString("description"));
+                dictionary.addWordToDictionary(word);
+            }
+            System.out.println("done");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("fail sql");
+        }
+    }
+
+
+}
