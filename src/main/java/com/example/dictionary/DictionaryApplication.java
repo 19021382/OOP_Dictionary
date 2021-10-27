@@ -538,7 +538,65 @@ public class DictionaryApplication extends Application{
      * @return
      */
     private Scene translateViToEn() {
-        
+        HBox head = new HBox();
+
+        HBox body1 = new HBox();
+        TextField text = new TextField();
+        text.setAlignment(Pos.BASELINE_CENTER);
+        text.setMinWidth(500);
+        text.setMaxWidth(500);
+        text.setMinHeight(50);
+        text.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+
+        Button translate = new Button("Translate");
+        translate.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+
+        body1.getChildren().addAll(translate, text);
+
+        HBox body2 = new HBox();
+        Label label = new Label();
+        BackgroundFill background_fill = new BackgroundFill(Color.PINK, CornerRadii.EMPTY, Insets.EMPTY);
+
+        Background background = new Background(background_fill);
+        label.setBackground(background);
+        label.setMinWidth(800);
+        label.setMaxWidth(800);
+        label.setMinHeight(300);
+        label.setWrapText(true);
+
+        body2.getChildren().addAll(label);
+
+        HBox end = new HBox();
+        Button back = new Button("BACK");
+        back.setStyle("-fx-font: 20 arial; -fx-base: #b6e7c9;");
+        back.setAlignment(Pos.BASELINE_RIGHT);
+        back.setOnAction(actionEvent -> {
+            if (actionEvent.getSource() == back) {
+                window.setScene(scene1);
+            }
+        });
+        back.setAlignment(Pos.BASELINE_RIGHT);
+        end.getChildren().addAll(back);
+        end.setAlignment(Pos.BASELINE_RIGHT);
+
+        translate.setOnAction(actionEvent -> {
+            if (actionEvent.getSource() == translate) {
+                String textTranslate = text.getText().trim();
+                try {
+                    label.setText(GoogleAPI.translate("vi", "en", textTranslate));
+                    label.setFont(Font.font(null, FontWeight.BOLD, 20));
+                    label.setAlignment(Pos.BASELINE_CENTER);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        VBox layout = new VBox();
+        layout.getChildren().addAll(head,body1, body2, end);
+        layout.setSpacing(40);
+        Scene scene = new Scene(layout, 800, 600);
+        return scene;
     }
 }
 
