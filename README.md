@@ -1,2 +1,5 @@
-# OOP_Dictionary
-Bài tập lớn Từ điển OOP nhóm 1
+# Java_Dictionary
+A java project
+## Member:
+* Nguyen Duc Tuan
+* Do Minh Duc
